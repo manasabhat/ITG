@@ -6,8 +6,7 @@ Author:	 1PI09IS049,
 		 MANASA K,
 		 ISE,
 		 PESIT,
-		 Bangalore.
-*/
+		 Bangalore.								*/
 
 #include "header.h"
 
