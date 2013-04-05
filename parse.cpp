@@ -102,6 +102,7 @@ int abs_metric_calc()
 	int size = total_samples/n;
 	float res;
 	cout<<"abs metric calc\n";
+	cout<<"I am here:\n";
 	
 //brightness,blurriness,entropy,randomness
 	for(i=0;i<n;i++) {
