@@ -18,11 +18,11 @@ int second_level()
 	parse((char*) (op_path+"file.txt").c_str() );
 
 //calling greedy 
-//	greedy();
+	greedy();
 
 //OR
 //calling backtracking programming 
-	backtracking();
+//	backtracking();
 
 //show the thumbnails
 	show_frames(flag,n);

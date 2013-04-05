@@ -11,7 +11,7 @@ Author : 1PI09IS049,
 #include "header.h"
 ifstream myfile;
 int* frame_no;
-int* face;
+float* face;
 float* bright;
 float* blurry;
 float* entropy;
@@ -37,7 +37,7 @@ int parse( char* fname)
 //	frame* frames;
 //	frames = (frame*)malloc(sizeof(frame)*total);
 	frame_no = (int*)malloc(sizeof(int)*total_samples);
-	face = (int*) malloc(sizeof(int)*total_samples);
+	face = (float*) malloc(sizeof(int)*total_samples);
 	bright = (float*)malloc(sizeof(int)*total_samples);
 	blurry = (float*)malloc(sizeof(int)*total_samples);
 	entropy = (float*)malloc(sizeof(int)*total_samples);
@@ -113,7 +113,7 @@ int abs_metric_calc()
 			res = entropy[i*size+j];
 			res = (res)/5.0;
 			abs_metrics[i][j] += res*0.125;
-			res = (face[i*size+j]>0)?1:0;
+			res = (face[i*size+j]>0);
 			abs_metrics[i][j] += res*0.125;
 		}
 	}

@@ -53,7 +53,7 @@ IplImage* resize_image( IplImage* frame )
 
 int check_validity(int pos,int size)
 {
-	int face;
+	float face;
 	float bright;
 	float blur;
 	float entropy;
@@ -90,7 +90,7 @@ int check_validity(int pos,int size)
 #if PRINT_DEBUG
 	cout<<"face:"<<face<<endl;
 #endif
-	if(!face) {
+	if(face==0) {
 #if TRACE_STEPS
 		cout<<"reject : no faces found \n";
 #endif

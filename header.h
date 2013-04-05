@@ -6,8 +6,7 @@ Author : 1PI09IS049,
          MANASA K,
          ISE,
          PESIT,
-         Bangalore.
-*/
+         Bangalore.							*/
 
 #include<highgui.h>
 #include<string.h>
@@ -48,7 +47,7 @@ extern IplImage* img;
 //global variables for second level & third level
 extern ifstream myfile;
 extern int* frame_no;
-extern int* face;
+extern float* face;
 extern float* bright;
 extern float* blurry;
 extern float* entropy;
@@ -73,7 +72,7 @@ int show_image(IplImage*);
 float brightness(IplImage*);
 float blurriness(IplImage*);
 float correlation( IplImage,IplImage);
-int detect_draw(IplImage*);
+float detect_draw(IplImage*);
 float randomness(IplImage*);
 IplImage* resize_image(IplImage*);
 int check_validity(int,int);

@@ -66,6 +66,23 @@ int best_frame( int start,int size)
 #if TRACE_STEPS
 	cout<<endl;
 #endif
+//face
+	for(i=0;i<size;i++) {
+		pos = size;
+		temp = fabs( face[i+start] -0.25);
+		for(j=0;j<size;j++) {
+			if(i!=j) {
+				temp1 = fabs(face[j+start]-0.25);
+				if(temp < temp1) {
+					pos--;
+				}
+			}
+		}
+		local_flags[i] += pos;
+#if TRACE_STEPS
+		cout<<pos<<"\t";
+#endif
+	}
 //entropy
 	for(i=0;i<size;i++) {
 		pos =size;

@@ -25,15 +25,15 @@ float blurriness( IplImage* image)
 {
 
 	IplImage* clm_dst = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* row_dst = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* act_var_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* act_var_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* blur_var_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* blur_var_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* var_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* var_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* diff_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-IplImage* diff_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* row_dst = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* act_var_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* act_var_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* blur_var_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* blur_var_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* var_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* var_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* diff_v = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
+	IplImage* diff_h = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
 	
 	IplImage* temp = cvCreateImage( cvSize(image->width,image->height),image->depth,image->nChannels);
 	cvCopy( image,temp);
@@ -255,7 +255,7 @@ IplImage* diff_h = cvCreateImage(cvSize(image->width,image->height),image->depth
 }
 
 
-int detect_draw(IplImage* img)
+float detect_draw(IplImage* img)
 {
 	char* cascadename = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml";
 	CvHaarClassifierCascade* cascade = (CvHaarClassifierCascade*) cvLoad(cascadename,0,0,0);
@@ -265,7 +265,9 @@ int detect_draw(IplImage* img)
 	static CvScalar colors[]={ {{0,0,255}},{{0,128,255}},{{0,255,255}},{{0,255,0}},
     {{255,128,0}},{{255,255,0}},{{255,0,0}},{{255,0,255}} };
 
-
+/* Get the area covered by faces as the result. If more than one face exists add all
+areas to give the result.*/
+	float total_area = 0;
 	int total_faces = 0;
 #if PRINT_DEBUG
     cout<<"detect and draw\n";
@@ -293,6 +295,7 @@ int detect_draw(IplImage* img)
     for(int i=0;i< (objects? objects->total : 0) ; i++) {
 		r = (CvRect*)cvGetSeqElem( objects,i );
 		cvRectangle(temp,cvPoint(r->x,r->y),cvPoint(r->x+r->width,r->y+r->height),colors[5]);
+		total_area += (r->width)*(r->height);
 #if PRINT_DEBUG
 		cout<<"("<<r->x<<","<<r->y<<")"<<endl;
 		cout<<"("<<r->width<<","<<r->height<<")"<<endl;
@@ -316,7 +319,7 @@ int detect_draw(IplImage* img)
 #if PRINT_DEBUG 
 	cout<<"end of detect and draw\n";
 #endif
-	return( total_faces );
+	return( total_area );
 }
 
 
