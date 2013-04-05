@@ -113,7 +113,7 @@ int abs_metric_calc()
 			res = entropy[i*size+j];
 			res = (res)/5.0;
 			abs_metrics[i][j] += res*0.125;
-			res = (face[i*size+j]>0);
+			res = 1 - fabs(face[i*size+j] - 0.25);
 			abs_metrics[i][j] += res*0.125;
 		}
 	}
