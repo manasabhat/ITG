@@ -114,7 +114,7 @@ int check_validity(int pos,int size)
 #if TRACE_STEPS
 	cout<<"entropy:"<<entropy<<endl;
 #endif
-	if(entropy<5) {
+	if(entropy<0.015) {
 #if TRACE_STEPS
 		cout<<"rejected : less entropy "<<entropy<<endl;
 #endif
