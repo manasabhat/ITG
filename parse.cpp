@@ -103,7 +103,7 @@ int abs_metric_calc()
 	float res;
 	cout<<"abs metric calc\n";
 	
-//brightness,blurriness,entropy,randomness
+//brightness,blurriness,entropy,face
 	for(i=0;i<n;i++) {
 		for(j=0;j<size;j++) {
 			res = 1 - fabs(bright[i*size+j] -0.5) *2;

@@ -164,6 +164,7 @@ float blurriness( IplImage* image)
 //	var_v = cvCreateImage(cvSize(image->width,image->height),IPL_DEPTH_32F,image->nChannels);
 //	var_h = cvCreateImage(cvSize(image->width,image->height),IPL_DEPTH_32F,image->nChannels);
 	
+#if PRINT_DEBUG
 	for(i=0;i<image->height;i++) {
 		for( j=0;j<image->width;j++) {	
 			scal = cvGet2D(diff_v,i,j);
@@ -172,9 +173,7 @@ float blurriness( IplImage* image)
 			}
 		}
 	}
-#if PRINT_DEBUG
 	cout<<"max buff_v:"<<max<<endl;
-#endif
 	for(i=0;i<image->height;i++) {
 		for(j=0;j<image->width;j++) {
 			scal.val[0] = max;
@@ -191,7 +190,6 @@ float blurriness( IplImage* image)
 	        }   
 	    }   
 	} 
-#if PRINT_DEBUG  
 	cout<<"max buff_h:"<<max<<endl;
 #endif
 	for(i=0;i<image->height;i++) {
@@ -330,6 +328,7 @@ float randomness( IplImage* image )
 	int diff = 0;
 	int i=0;
 	int j=0;
+	int k=0;
 #if SHOW_IMAGE	
 	cvShowImage("image",image);
 	cvWaitKey(0);
@@ -347,14 +346,15 @@ float randomness( IplImage* image )
 			scal7 = cvGet2D(image,i+1,j-1);
 			scal8 = cvGet2D(image,i,j-1);
 			scal = cvGet2D(image,i,j);
-			diff += abs(scal.val[0]-scal1.val[0])+abs(scal.val[0]-scal2.val[0])
-				+abs(scal.val[0]-scal3.val[0])+abs(scal.val[0]-scal4.val[0])
-				+abs(scal.val[0]-scal5.val[0])+abs(scal.val[0]-scal6.val[0])
-				+abs(scal.val[0]-scal7.val[0])+abs(scal.val[0]-scal8.val[0]);
-			
+			for(k=0;k<3;k++) {
+				diff += abs(scal.val[k]-scal1.val[k])+abs(scal.val[k]-scal2.val[k])
+					+abs(scal.val[k]-scal3.val[k])+abs(scal.val[k]-scal4.val[k])
+					+abs(scal.val[k]-scal5.val[k])+abs(scal.val[k]-scal6.val[k])
+					+abs(scal.val[k]-scal7.val[k])+abs(scal.val[k]-scal8.val[k]);
+			}
 		}
 	}
-	entropy = ((float)diff)/((total)*6);
+	entropy = ((float)diff)/((total)*8*3*255);
 #if PRINT_DEBUG
 	cout<<"total:"<<total<<endl;
 	cout<<"diff : "<<diff<<endl;

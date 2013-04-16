@@ -45,7 +45,6 @@ int divide_interval()
 	samples = (IplImage**)malloc(sizeof(IplImage*)*total_interval*total_samples);
 	for( i= 0;i<total_interval;i++) {
 		collect_valid(i*size,(i+1)*size-1 );
-
 	}
 	return(0);
 }
