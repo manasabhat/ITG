@@ -90,8 +90,9 @@ int show_frames( int* thumbnails,int size)
 {
 	cout<<"show frame no:\n";
 	for(int i=0;i<size;i++) {
-		thumbnails[i] = frame_no[thumbnails[i]];
-		cout<<thumbnails[i]<<endl;
+//		thumbnails[i] = frame_no[thumbnails[i]];
+//		cout<<thumbnails[i]<<endl;
+		cout<<frame_no[thumbnails[i]]<<endl;
 	}
 	return(0);
 }

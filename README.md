@@ -6,7 +6,11 @@ Author : 1PI09IS049,
          ISE,
          PESIT,
          Bangalore.
+		 manasabhat999@gmail.com
 
 Intelligent Thumbnails Creation
-
-
+How to run :
+make clean
+make all
+./main video-name
+This will create a folder in the video name and stores output in that folder.

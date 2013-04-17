@@ -64,7 +64,7 @@ int check_validity(int pos,int size)
 #if TRACE_STEPS
 	cout<<"size:"<<size<<endl;
 #endif
-	if(!consider_flags[REPEATED]==1) {
+	if(!consider_flags[REPEATED]) {
 	for(i=0;i<size;i++) {
 		if(abs(valid_frames[i]-pos)<100) {
 #if TRACE_STEPS
@@ -76,14 +76,14 @@ int check_validity(int pos,int size)
 	}
 	cvSetCaptureProperty(capture,CV_CAP_PROP_POS_FRAMES,pos);
 	img = resize_image(cvQueryFrame(capture));
-	if(!consider_flags[BRIGHTNESS]==1) {
-	bright = brightness(resize_image(img));
-	if(bright<0.2 ||bright>0.8) {
+	if(!consider_flags[BRIGHTNESS]) {
+		bright = brightness(resize_image(img));
+		if(bright<0.2 ||bright>0.8) {
 #if TRACE_STEPS
-		cout<<"reject : brightness out of range\n";
+			cout<<"reject : brightness out of range\n";
 #endif
-		return(BRIGHTNESS);
-	}
+			return(BRIGHTNESS);
+		}
 	}
 	if(!consider_flags[FACE]) {
 	face = detect_draw(resize_image(img));
@@ -165,23 +165,27 @@ int collect_valid(int start,int end)
 		cout<<"pos:"<<pos<<endl;
 #endif
 		valid = check_validity(pos,i);
-		if(count_failure>0 && failure_type==valid) {
-			count_failure++;
-		}
-		if(count_failure==0) {
-			failure_type = valid;
-			if(valid) {
-				count_failure++;	
-			}
-		}
-		if(count_failure==5) {
-			consider_flags[0]=1;
-			consider_flags[failure_type]=1;
-		}
 #if TRACE_STEPS
-		cout<<"count failure:"<<count_failure<<"\nvalid:"<<valid<<endl;
+		cout<<"count failure:"<<count_failure<<"\tvalid:"<<valid<<"\tfailure type:"<<failure_type<<endl;
 #endif
-		if(!count_failure && !valid) {
+		if(count_failure>0 && failure_type==valid) {
+			count_failure = count_failure+1;
+		}
+		else if(count_failure==0 && valid>0) {
+			failure_type = valid;
+			count_failure = 1;	
+		}
+#if PRINT_DEBUG
+		cout<<"count failure:"<<count_failure<<"\tvalid:"<<valid<<"\tfailure type:"<<failure_type<<endl;
+#endif
+		if(count_failure>4) {
+			consider_flags[failure_type]=1;
+			count_failure =0;
+		}
+ #if TRACE_STEPS
+     cout<<"total samples required:"<<total_samples<<endl;
+ #endif
+		if(!valid) {
 			valid_frames[valid_index]=pos;
 			samples[valid_index] = cvCreateImage( cvSize(img->width,img->height),img->depth,img->nChannels);
 			cvCopy(img,samples[valid_index]);
@@ -193,9 +197,9 @@ int collect_valid(int start,int end)
 #if TRACE_STEPS
 			cout<<"i:"<<i<<endl;
 #endif
+			count_failure =0;
 		}
 		valid =0;
-		count_failure = 0;
 	}
 	return(0);
 }
@@ -255,7 +259,7 @@ int show_output_thumbnails()
 		file_path = string(op_path+file_name.str());
 		cout<<"output file name:"<<file_path.c_str()<<endl;
 		cout<<"frame no:"<<output_thumbnails[i]<<endl;
-		cvSetCaptureProperty(capture,CV_CAP_PROP_POS_FRAMES,output_thumbnails[i]);
+		cvSetCaptureProperty(capture,CV_CAP_PROP_POS_FRAMES,frame_no[output_thumbnails[i]]);
 		frame = cvQueryFrame(capture);
 		cvSaveImage(file_path.c_str(),frame);
 		cvShowImage("output",frame);
