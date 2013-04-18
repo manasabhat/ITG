@@ -317,6 +317,7 @@ areas to give the result.*/
 #if PRINT_DEBUG 
 	cout<<"end of detect and draw\n";
 #endif
+	total_area = total_area/total;
 	return( total_area );
 }
 

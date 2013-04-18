@@ -112,7 +112,6 @@ int abs_metric_calc()
 			res = 1 - blurry[i*size+j];
 			abs_metrics[i][j] += res*0.125;
 			res = entropy[i*size+j];
-			res = (res)/5.0;
 			abs_metrics[i][j] += res*0.125;
 			res = 1 - fabs(face[i*size+j] - 0.25);
 			abs_metrics[i][j] += res*0.125;

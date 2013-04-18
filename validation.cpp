@@ -53,10 +53,10 @@ IplImage* resize_image( IplImage* frame )
 
 int check_validity(int pos,int size)
 {
-	float face;
-	float bright;
-	float blur;
-	float entropy;
+	float face =0;
+	float bright =0;
+	float blur =0;
+	float entropy =0;
 	float* correlations;
 	int j;
 	correlations = (float*)malloc(sizeof(float)*valid_index);
@@ -76,17 +76,17 @@ int check_validity(int pos,int size)
 	}
 	cvSetCaptureProperty(capture,CV_CAP_PROP_POS_FRAMES,pos);
 	img = resize_image(cvQueryFrame(capture));
+	bright = brightness(resize_image(img));
 	if(!consider_flags[BRIGHTNESS]) {
-		bright = brightness(resize_image(img));
-		if(bright<0.2 ||bright>0.8) {
+			if(bright<0.2 ||bright>0.8) {
 #if TRACE_STEPS
 			cout<<"reject : brightness out of range\n";
 #endif
 			return(BRIGHTNESS);
 		}
 	}
-	if(!consider_flags[FACE]) {
 	face = detect_draw(resize_image(img));
+	if(!consider_flags[FACE]) {
 #if PRINT_DEBUG
 	cout<<"face:"<<face<<endl;
 #endif
@@ -97,8 +97,8 @@ int check_validity(int pos,int size)
 		return(FACE);
 	}
 	}
-	if(!consider_flags[BLUR]) {
 	blur = blurriness(resize_image(img));
+	if(!consider_flags[BLUR]) {
 #if TRACE_STEPS
 	cout<<"blur:"<<blur<<endl;
 #endif
@@ -109,8 +109,8 @@ int check_validity(int pos,int size)
 		return(BLUR);
 	}
 	}
-	if(!consider_flags[ENTROPY]) {
 	entropy = randomness( resize_image(img));
+	if(!consider_flags[ENTROPY]) {
 #if TRACE_STEPS
 	cout<<"entropy:"<<entropy<<endl;
 #endif

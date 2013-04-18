@@ -83,6 +83,9 @@ int best_frame( int start,int size)
 		cout<<pos<<"\t";
 #endif
 	}
+#if TRACE_STEPS
+	cout<<endl;
+#endif
 //entropy
 	for(i=0;i<size;i++) {
 		pos =size;

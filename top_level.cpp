@@ -13,6 +13,7 @@ int* output_thumbnails;
 
 int top_level()
 {
+	int k;
 	int pres;
 	float max_val;
 	float pres_val;
@@ -31,61 +32,62 @@ int top_level()
 	cout<<endl;
 
 	cout<<"n/2:"<<n/2<<endl;
-
+	
+	max_val =0;
 	for( int i=0;i<n;i++) {
 			cout<<"index:"<<flag[i]<<"\t";
-			cout<<abs_metrics[i][flag[i]]<<endl;
-	}
-
-	while( index_thumbnail<n/2) {
-		max_val =-1;
-		max_ind =0;
-		for(int i=0;i<n;i++) {
-			cout<<"i:"<<i<<endl;
-			flag_thumbnail =1;
-			int k = index_thumbnail;
-			if(!k) {
-				pres_val = abs_metrics[i][flag[i]];
-			}
-			else {
-				pres_val = 0;
-			}
-			pres = flag[i];
-			while ( k && flag_thumbnail) {
-				cout<<"k:"<<k<<endl;
-				k--;
-				cout<<"already:"<<output_thumbnails[k]<<endl;
-				cout<<"present:"<<pres<<endl;
-				if( pres ==output_thumbnails[k] ) {
-					flag_thumbnail =0;
-				}
-				else {
-					if(pres>output_thumbnails[k]) {
-						pres_val += 1-correlations[pres%size][output_thumbnails[k]%size];
-					}
-					else {
-						pres_val += 1-correlations[output_thumbnails[k]%size][pres%size];
-					}
-					pres_val += abs(frame_no[pres]-frame_no[output_thumbnails[k]])/size_in_frames;
-					cout<<frame_no[pres]<<endl;
-				}
-			}
-			if( flag_thumbnail && (pres_val > max_val)) {
-				max_ind = i;
+			pres_val = abs_metrics[i][flag[i]%size];
+			cout<<pres_val<<endl;
+			if(pres_val>max_val) {
 				max_val = pres_val;
-				cout<<"better than previous:"<<flag[max_ind]<<endl;
+				max_ind = i;
+			}
+	}
+	output_thumbnails[0] = flag[max_ind];
+	index_thumbnail++;
+
+	pres_val = pres = 0;	
+	max_val = max_ind = 0;
+	int reference;
+	while(index_thumbnail < n/2) {
+		for( int i=0;i<n;i++) {
+			k = index_thumbnail;
+			pres = flag[i];
+			cout<<"k:"<<k<<endl;
+			flag_thumbnail = 1;
+			while(k--) {
+				if(output_thumbnails[k] == pres) {
+					flag_thumbnail = 0;	
+				}
+			}
+			k = index_thumbnail;
+			if(flag_thumbnail) {
+				while(k--) {
+					reference = output_thumbnails[k];
+					cout<<"k:"<<k<<"\t"<<reference<<"\t"<<pres<<endl;
+						cout<<"k:"<<k<<"\t"<<reference<<"\t"<<pres<<"\t";
+						if(reference < pres ) {
+							pres_val += 1-correlations[reference][pres];
+						}
+						else {
+							pres_val += 1-correlations[pres][reference];
+						}
+						pres_val += fabs(frame_no[pres] - frame_no[reference]);
+						cout<<pres_val<<endl;
+				}
+				if( pres_val>max_val) {
+					max_val = pres_val;
+					max_ind = pres;
+				}	
 			}
 		}
-		output_thumbnails[index_thumbnail] = flag[max_ind];
-		cout<<"output_thumbnails:"<<output_thumbnails[index_thumbnail]<<endl;
-		index_thumbnail++;
+		output_thumbnails[index_thumbnail++] = max_ind;
 	}
 
 //see the valid frame numbers		
 	for(int i=0;i<n/2;i++) {
 		cout<<" i:"<<output_thumbnails[i]<<endl;
 	}
-
 //final selection algorithm : where each frame is *as far from other and
 //												  *as different as possible
 	
