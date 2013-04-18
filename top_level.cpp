@@ -46,11 +46,11 @@ int top_level()
 	output_thumbnails[0] = flag[max_ind];
 	index_thumbnail++;
 
-	pres_val = pres = 0;	
 	max_val = max_ind = 0;
 	int reference;
 	while(index_thumbnail < n/2) {
 		for( int i=0;i<n;i++) {
+			pres_val = pres = 0;
 			k = index_thumbnail;
 			pres = flag[i];
 			cout<<"k:"<<k<<endl;
@@ -66,13 +66,13 @@ int top_level()
 					reference = output_thumbnails[k];
 					cout<<"k:"<<k<<"\t"<<reference<<"\t"<<pres<<endl;
 						cout<<"k:"<<k<<"\t"<<reference<<"\t"<<pres<<"\t";
-						if(reference < pres ) {
+						if(reference > pres ) {
 							pres_val += 1-correlations[reference][pres];
 						}
 						else {
 							pres_val += 1-correlations[pres][reference];
 						}
-						pres_val += fabs(frame_no[pres] - frame_no[reference]);
+						pres_val += (fabs(frame_no[pres] - frame_no[reference]))/total_frames;
 						cout<<pres_val<<endl;
 				}
 				if( pres_val>max_val) {
